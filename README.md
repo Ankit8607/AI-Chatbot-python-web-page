@@ -1,4 +1,4 @@
-# chatbot
+# chatbott
 To run this project: run the python file -> python3 server.py
 then : open url on browser / open html file on live server
 
