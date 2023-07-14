@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Question-Answer Web Page</title>
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"> -->
+  <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      #response-container {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+
+  </style>
+
+</head>
+<body>
+  <h1>Question-Answer Web Page</h1>
+  <form id="question-form">
+    <input type="text" id="question-input" placeholder="Enter your question">
+    <button type="submit">Ask</button>
+  </form>
+  <div id="response-container"></div>
+
+  <!-- <script src="script.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+  <script>
+      document.getElementById('question-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const questionInput = document.getElementById('question-input');
+      const responseContainer = document.getElementById('response-container');
+      
+      const question = questionInput.value;
+      
+      // Send the question to the backend for processing as a POST request
+      fetch('https://d5i49ranb0.execute-api.ap-south-1.amazonaws.com/student-api-HelloWorldFunction-bWzTR6kX26Dz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question : question })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('API request failed');
+        }
+        return response.json();
+      })
+      .then(responseData => {
+        console.log(responseData);
+        responseContainer.innerHTML = `<p><b>Response:</b> ${responseData}</p>`;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+      // Reset the input field
+      questionInput.value = '';
+    });
+
+  </script>
+</body>
+</html>
